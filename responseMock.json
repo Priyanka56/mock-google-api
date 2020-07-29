@@ -1,0 +1,47 @@
+{
+	"data":[{
+	"method": "POST",
+	"url": "http://test.com",
+	"reqBody": {
+		"user": "1",
+		"password": "2"
+	},
+	"responseBody": {
+		"msg": "request sent successfully"
+	}
+},
+{
+	"method": "POST",
+	"url": "http://test.com",
+	"reqBody": {
+		"user": "1",
+		"password": "2"
+	},
+	"responseBody": {
+		"msg": "request sent successfully"
+	}
+},
+{
+	"method": "POST",
+	"url": "http://test.com",
+	"reqBody": {
+		"user": "1",
+		"password": "2"
+	},
+	"responseBody": {
+		"msg": "request sent successfully"
+	}
+},
+{
+	"method": "POST",
+	"url": "http://test.com",
+	"reqBody": {
+		"user": "1",
+		"password": "2"
+	},
+	"responseBody": {
+		"msg": "request sent successfully"
+	}
+}
+]
+}
