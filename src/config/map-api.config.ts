@@ -1,3 +1,1 @@
-export const mapAPIKey = {
-	"mapsApiKey": "AIzaSyCW6txEGznuAButwcWFpcF8YZAAXoeooB0"
-}
+export const mapAPIKey =  "AIzaSyCW6txEGznuAButwcWFpcF8YZAAXoeooB0";

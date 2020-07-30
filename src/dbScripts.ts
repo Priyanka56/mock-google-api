@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 export class DAOClass {
 
     public directionModel: any = {};
+    public distanceMatrixModel:any = {};
     public db: any;
     constructor() {
         // make a connection 
@@ -24,6 +25,14 @@ export class DAOClass {
             });
             // compile schema to model
             this.directionModel = mongoose.model('directions', directionSchema);
+            let distanceMatrixSchema = new mongoose.Schema({
+                _id: Object,
+                origins: String,
+                destinations: String,
+                response: Object
+            });
+            // compile schema to model
+            this.distanceMatrixModel = mongoose.model('directions', distanceMatrixSchema);
         });
 
     }
@@ -44,5 +53,23 @@ export class DAOClass {
                     returnData = err;
                 });
         return returnData;
+    }
+    
+    async insertDistanceMatrix(origins: any, destinations: any, response: Object) {
+        var returnData = null;
+        this.directionModel.collection.insertOne({ origins, destinations, response })
+            .then((docs: any) => {
+                console.log("single record is inserted into db", docs.ops);
+                returnData = docs.ops;
+            },
+                (err: any) => {
+                    returnData = err;
+                });
+        return returnData;
+    }
+
+    public getDistanceMatrix(origins: any, destinations: any) {
+        return this.distanceMatrixModel.findOne(
+            { origins, destinations});
     }
 }

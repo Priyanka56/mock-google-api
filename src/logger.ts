@@ -29,6 +29,5 @@ export class Logger {
             ],
             exitOnError: false, // do not exit on handled exceptions
         });
-        console.log(this.logger);
     }
 }
