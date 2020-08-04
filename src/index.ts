@@ -41,18 +41,22 @@ app.get('/maps/api/distancematrix/json?', async (req, res, next) => {
     let apiKey = req.query.key?req.query.key:mapAPIKey;
     let response = {};
     let dbRecord = await db.getDistanceMatrix(origins, destinations);
+    console.log(typeof origins);
     if (dbRecord) {
         response = dbRecord;
         console.log("db record found",dbRecord);
     }
     else {
-         await googleMaps.getDistanceMatrix(origins, destinations, apiKey).then((res:any) => {
+         await googleMaps.getDistanceMatrix(origins, destinations, apiKey)
+         .then((res:any) => {
+            console.log(res.data);
             response = res.data;
         }).catch((error:any)=>{
-            response= error;
+            console.log("error",error);
+            response = {};
         });
         console.log("db record not found",response);
-        response?await db.insertDistanceMatrix(origins, destinations, response):null ;
+        response && response!={}?await db.insertDistanceMatrix(origins, destinations, response):null ;
     }
     loggerApi.logger.info(response);
     res.send(response);

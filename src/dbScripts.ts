@@ -32,7 +32,7 @@ export class DAOClass {
                 response: Object
             });
             // compile schema to model
-            this.distanceMatrixModel = mongoose.model('directions', distanceMatrixSchema);
+            this.distanceMatrixModel = mongoose.model('distanceMatrix', distanceMatrixSchema);
         });
 
     }
@@ -57,9 +57,9 @@ export class DAOClass {
     
     async insertDistanceMatrix(origins: any, destinations: any, response: Object) {
         var returnData = null;
-        this.directionModel.collection.insertOne({ origins, destinations, response })
+        this.distanceMatrixModel.collection.insertOne({ origins, destinations, response })
             .then((docs: any) => {
-                console.log("single record is inserted into db", docs.ops);
+                console.log("single record is inserted into db distanceMatrix", docs.ops);
                 returnData = docs.ops;
             },
                 (err: any) => {
