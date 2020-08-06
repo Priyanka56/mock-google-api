@@ -5,12 +5,14 @@ import { GoogleMaps } from './maps';
 import { Logger } from './logger';
 import { mapAPIKey } from "./config/map-api.config";
 let app = express();
+const dotenv = require('dotenv').config();
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 var db = new DAOClass();
-var googleMaps = new GoogleMaps();
+var googleMaps = new GoogleMaps();  
 var loggerApi = new Logger();
-// Get webhook associated with device
+// Get directions for origin and destination
 app.get('/maps/api/directions/json?', async (req, res, next) => {
     let origin = req.query.origin;
     let destination = req.query.destination;
@@ -34,14 +36,13 @@ app.get('/maps/api/directions/json?', async (req, res, next) => {
     res.send(response);
 });
 
-// Get webhook associated with device
+// Get distance matrix
 app.get('/maps/api/distancematrix/json?', async (req, res, next) => {
     let origins = req.query.origins;
     let destinations = req.query.destinations;
     let apiKey = req.query.key?req.query.key:mapAPIKey;
     let response = {};
     let dbRecord = await db.getDistanceMatrix(origins, destinations);
-    console.log(typeof origins);
     if (dbRecord) {
         response = dbRecord;
         console.log("db record found",dbRecord);
@@ -59,6 +60,38 @@ app.get('/maps/api/distancematrix/json?', async (req, res, next) => {
         response && response!={}?await db.insertDistanceMatrix(origins, destinations, response):null ;
     }
     loggerApi.logger.info(response);
+    res.send(response);
+});
+
+// Get address from lat lng
+app.get('/maps/api/geocode/json', async (req, res, next) => {
+    console.log("environment variable", dotenv);
+    let latlng = req.query.latlng;
+    let address = req.query.address;
+    let locationType = req.query.location_type;
+    let resultType = req.query.result_type;
+    let apiKey = dotenv.key;
+    let response:any = {};
+    let dbRecord = latlng?await db.getAddressFromCoordinates(latlng):await db.getCoordinates(address);
+    if (dbRecord) {
+        response = dbRecord;
+        console.log("db record found",dbRecord);
+    }
+    else {
+        let responsePromise = latlng?googleMaps.getAddressfromCoordinates(latlng, locationType, resultType,apiKey): googleMaps.getGeoCoordinates(address, apiKey);
+        await responsePromise
+         .then((res:any) => {
+            console.log(res.data);
+            response = res.data;
+        }).catch((error:any)=>{
+            console.log("error",error);
+            response = {};
+        });
+        console.log("db record not found",response);
+        response && response!={} && latlng ?await db.insertLatLng(latlng, response): await db.insertAddress(address, response);
+    }
+    loggerApi.logger.info(response);
+    response.key = apiKey
     res.send(response);
 });
 
