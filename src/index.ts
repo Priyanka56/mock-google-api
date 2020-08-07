@@ -16,7 +16,7 @@ var loggerApi = new Logger();
 app.get('/maps/api/directions/json?', async (req, res, next) => {
     let origin = req.query.origin;
     let destination = req.query.destination;
-    let apiKey = req.query.key?req.query.key:mapAPIKey;
+    let apiKey = dotenv.key;
     let response = {};
     let dbRecord = await db.getDirections(origin, destination);
     if (dbRecord) {
@@ -40,7 +40,7 @@ app.get('/maps/api/directions/json?', async (req, res, next) => {
 app.get('/maps/api/distancematrix/json?', async (req, res, next) => {
     let origins = req.query.origins;
     let destinations = req.query.destinations;
-    let apiKey = req.query.key?req.query.key:mapAPIKey;
+    let apiKey = dotenv.key;
     let response = {};
     let dbRecord = await db.getDistanceMatrix(origins, destinations);
     if (dbRecord) {
@@ -78,7 +78,7 @@ app.get('/maps/api/geocode/json', async (req, res, next) => {
         console.log("db record found",dbRecord);
     }
     else {
-        let responsePromise = latlng?googleMaps.getAddressfromCoordinates(latlng, locationType, resultType,apiKey): googleMaps.getGeoCoordinates(address, apiKey);
+        let responsePromise = latlng?googleMaps.getAddressfromCoordinates(latlng, apiKey): googleMaps.getGeoCoordinates(address, apiKey);
         await responsePromise
          .then((res:any) => {
             console.log(res.data);
@@ -95,4 +95,4 @@ app.get('/maps/api/geocode/json', async (req, res, next) => {
     res.send(response);
 });
 
-app.listen(3128);
+app.listen(dotenv.PORT);

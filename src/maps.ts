@@ -32,12 +32,10 @@ export class GoogleMaps {
         })
     }
 
-    public async  getAddressfromCoordinates(latlng: any,locationType?:any,resultType?:any, mapKey?: any): Promise<any> {
+    public async  getAddressfromCoordinates(latlng: any,mapKey?: any): Promise<any> {
         return await axios.get('https://maps.googleapis.com/maps/api/geocode/json?', {
             params: {
                 latlng, 
-                location_type:locationType?locationType:undefined,
-                result_type:resultType?resultType:undefined,
                 key: mapKey
             }
         })

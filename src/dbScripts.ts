@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-
-
 export class DAOClass {
 
     public directionModel: any = {};
@@ -9,6 +7,7 @@ export class DAOClass {
     public latLngModel:any = {};
     public db: any;
     constructor() {
+        
         // make a connection 
         mongoose.connect('mongodb+srv://omni:2H7KEn8oJWlnXcDb@cluster0-qt6ov.mongodb.net/google-api-db?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
             console.log("connected to database");
