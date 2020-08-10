@@ -112,7 +112,7 @@ export class DAOClass {
         var returnData = null;
         this.latLngModel.collection.insertOne({ latlng, response })
             .then((docs: any) => {
-                console.log("single record is inserted into db distanceMatrix", docs.ops);
+                console.log("single record is inserted into db geocode", docs.ops);
                 returnData = docs.ops;
             },
             (err: any) => {
