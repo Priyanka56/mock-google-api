@@ -22,7 +22,7 @@
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.1.5",
     "@types/mongoose": "^5.7.32",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "express": "^4.16.4",
     "mongoose": "^5.9.25",
     "winston": "^3.3.3"
